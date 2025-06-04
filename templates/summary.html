@@ -1,0 +1,78 @@
+{% if item == "admin" %}
+    {% extends "admin_layout.html" %}    
+{% elif item == "customer" %}
+    {% extends "customer_layout.html" %}
+{% elif item == "professional" %}
+    {% extends "professional_layout.html" %}
+{% endif %}
+
+    {% block content %}
+
+        <div class="rest">
+            <div class="summary">
+                <div class="summary-container">
+                    <h2>Summary:</h2>
+                    {% if item == "admin" %}
+                        {% for key, value in summary.items() %}
+                            <p><strong>{{ key }}:</strong> {{ value }}</p>
+                        {% endfor %}
+                    {% elif item == "customer" %}
+                        {% for key, value in summary.items() %}
+                            <p><strong>{{ key }}:</strong> {{ value }}</p>
+                        {% endfor %}
+                    {% elif item == "professional" %}
+                        {% for key, value in summary.items() %}
+                            <p><strong>{{ key }}:</strong> {{ value }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            
+                <!-- Optionally, display the chart -->
+                
+                <div class="chart-container">
+                    {% if item == "admin" %}
+                        {%  if summary['Total requests'] > 0 %}
+                            <img src="{{ url_for('static', filename='/images/status_chart.png') }}" alt="Status Chart" />
+                            <img src="{{ url_for('static', filename='/images/services_chart.png') }}" alt="Services Chart" />
+                        {% else %}
+                            <h3>No requests found. Service request chart will be displayed once any requests are made.</h3>
+                            <h3>No requests found. Service booking chart will be displayed once any requests are made.</h3>
+                        {% endif %}    
+                        {% if summary['Total users'] > 0 %}
+                            <img src="{{ url_for('static', filename='/images/users_chart.png') }}" alt="Users Chart" />
+                        {% else %}
+                            <h3>No users found. User chart will be displayed once any users are registered.</h3>
+                        {% endif %}
+                        {% if summary['Total completed'] > 0 %}
+                            <img src="{{ url_for('static', filename='/images/ratings_chart.png') }}" alt="Ratings Chart">
+                        {% else %}
+                            <h3>No ratings found. Rating chart will be displayed once any requests are completed.</h3>
+                        {% endif %}
+                    {% elif item == "customer" %}
+                        {% if summary['Total requests by you'] > 0 %}
+                        <img src="{{ url_for('static', filename='/images/status_chart.png') }}" alt="Status Chart" />
+                        {% else %}
+                        <h3>No requests found. Service request chart will be displayed once you have made a request.</h3>
+                        {% endif %}
+                        {% if summary['Total completed'] > 0 %}
+                        <img src="{{ url_for('static', filename='/images/ratings_chart.png') }}" alt="Ratings Chart">
+                        {% else %}
+                        <h3>No ratings found. Rating chart will be displayed once you have a completed service.</h3>
+                        {% endif %}
+                    {% elif item == "professional" %}
+                        {% if summary['Total requests to you'] > 0 %}
+                        <img src="{{ url_for('static', filename='/images/status_chart.png') }}" alt="Status Chart" />
+                        {% else %}
+                        <h3>No requests found. Service request chart will be displayed once you have accepted any request.</h3>
+                        {% endif %}
+                        {% if summary['Total completed'] > 0 %}
+                        <img src="{{ url_for('static', filename='/images/ratings_chart.png') }}" alt="Ratings Chart">
+                        {% else %}
+                        <h3>No ratings found. Rating chart will be displayed once you have completed any service.</h3>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>  
+        </div>
+
+    {% endblock %}

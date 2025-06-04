@@ -1,0 +1,367 @@
+{% extends "admin_layout.html" %}
+
+{% block content %}
+<div class="rest">
+    <div class="admin-view">
+        <div class="admin-view-container">
+
+            {% if service_id %}
+            <h2>Service Data:</h2>
+                <h3>Service ID: {{ service_id }}</h3>
+                <h3>Service Name: {{ service.service_name }}</h3>
+                
+                <h2>Manage Packages:</h2>
+
+                <table class="table-style">
+                    <thead>
+                        <tr>
+                            <th>Package ID</th>
+                            <th>Package Name</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if service.packages %}
+                            {% for package in service.packages %}
+                            <tr>
+                                <td><button class="view-button" onclick="window.location.href='/admin/view/packages?package_id={{ package.id }}'">{{ package.id }}</button></td>
+                                <td>{{ package.package_name }} ({{ package.service.service_name }})</td>
+                                <td>{{ package.price }}</td>
+                                <td >
+                                    <button class="edit-button" onclick="window.location.href='/admin/edit_package/{{ package.id }}'">Edit</button> 
+                                    <button class="red-button"  onclick="if(confirm('Are you sure you want to delete this package?')) window.location.href='/admin/delete_package/{{ package.id }}'">Delete</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5">No packages found.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <button onclick="window.location.href='/admin/add_package?service_id={{ service_id }}'" class="green" id ="add_package">+ Add Packages</button>
+
+                <h3>Available Professionals:</h3>
+
+                <table class="table-style">
+                    <thead>
+                        <tr>
+                            <th>Professional ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Service</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if service.professional %}
+                            {% for professional in service.professional %}
+                            <tr>
+                                <td><button class="view-button" onclick="window.location.href='/admin/view/professionals?professional_id={{ professional.user.id }}'">{{ professional.user.id }}</button></td>
+                                <td>{{ professional.full_name }}</td>
+                                <td>{{ professional.user.email }}</td>
+                                <td>{{ professional.contact }}</td>
+                                <td>{{ professional.service.service_name }}</td>
+                                <td>{{ professional.user.user_status }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="6" align="center">No professionals found.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+
+                <h3>Service History:</h3>
+
+                <table class="table-style">
+                    <thead>
+                        <tr>
+                            <th>Service ID</th>
+                            <th>Package Name</th>
+                            <th>Professional</th>
+                            <th>Customer</th>
+                            <th>Date Completed</th>
+                            <th>Status</th>
+                            <th>Ratings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if service_requests %}
+                            {% for request in service_requests %}
+                                    <tr>
+                                        <td>{{ request.id }}</td>
+                                        <td>{{ request.package.package_name }}</td>
+                                        {% if request.professional %}
+                                        <td>{{ request.professional.full_name }}</td>
+                                        {% else %}
+                                        <td>Not assigned</td>
+                                        {% endif %}
+                                        <td>{{ request.customer.full_name }}</td>
+                                        {% if request.status == 'completed' %}
+                                            <td>{{ request.date_of_complete.strftime("%d-%m-%Y") }}</td>
+                                        {% else %}
+                                            <td align="center">-</td>
+                                        {% endif %}
+                                        <td>{{ request.status }}</td>
+                                        {% if request.rating %}
+                                            <td class="star">
+                                                {% for i in range(request.rating) %}★{% endfor %}
+                                            </td>
+                                        {% else %}
+                                            {% if request.status == 'completed' %}
+                                                <td>Not Rated</td>
+                                            {% else %}
+                                                <td align="center">-</td>
+                                            {% endif %}
+                                        {% endif %}
+                                    </tr>
+                            {% endfor %}
+                        {% else %}    
+                            <tr>
+                                <td colspan="7" align="center">No requests found.</td>
+                            </tr>    
+                        {% endif %}
+                    </tbody>
+                </table>
+
+            {% elif package_id %}
+                <h2>Package Data:</h2>
+                <h3>Package ID: {{ package_id }}</h3>
+                <h3>Service Name: {{ package.service.service_name }}</h3>
+                <h3>Package Name: {{ package.package_name }}</h3>
+                <h3>Price: Rs.{{ package.price }}</h3>
+                
+                <h2>Professionals:</h2>
+
+                <table class="table-style">
+                    <thead>
+                        <tr>
+                            <th>Professional ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Service</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if package.service.professional %}
+                            {% for prof in package.service.professional %}
+                            <tr>
+                                <td><button class="view-button" onclick="window.location.href='/admin/view/professionals?professional_id={{ prof.user.id }}'">{{ prof.user.id }}</button></td>
+                                <td>{{ prof.full_name }}</td>
+                                <td>{{ prof.user.email }}</td>
+                                <td>{{ prof.contact }}</td>
+                                <td>{{ prof.service.service_name }}</td>
+                                <td>{{ prof.user.user_status }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="6">No professionals found.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+
+                <h2>Service History:</h2>
+
+                <table class="table-style">
+                    <thead>
+                        <tr>
+                            <th>Service ID</th>
+                            <th>Service Name</th>
+                            <th>Professional</th>
+                            <th>Customer</th>
+                            <th>Date Completed</th>
+                            <th>Status</th>
+                            <th>Ratings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if package.requests %}
+                            {% for request in package.requests %}
+                                    <tr>
+                                        <td>{{ request.id }}</td>
+                                        <td>{{ request.package.service.service_name }}</td>
+                                        {% if request.professional %}
+                                        <td>{{ request.professional.full_name }}</td>
+                                        {% else %}
+                                        <td>Not assigned</td>
+                                        {% endif %}
+                                        <td>{{ request.customer.full_name }}</td>
+                                        {% if request.status == 'completed' %}
+                                            <td>{{ request.date_of_complete.strftime("%d-%m-%Y") }}</td>
+                                        {% else %}
+                                            <td align="center">-</td>
+                                        {% endif %}
+                                        <td>{{ request.status }}</td>
+                                        {% if request.rating %}
+                                            <td class="star">
+                                                {% for i in range(request.rating) %}★{% endfor %}
+                                            </td>
+                                        {% else %}
+                                            {% if request.status == 'completed' %}
+                                                <td>Not Rated</td>
+                                            {% else %}
+                                                <td align="center">-</td>
+                                            {% endif %}
+                                        {% endif %}
+                                    </tr>
+                            {% endfor %}
+                        {% else %}    
+                            <tr>
+                                <td colspan="6" align="center">No requests found.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+
+            {% elif customer_id %}
+                
+                <h2>Customer Data:</h2>
+                <h3>Customer ID: {{ customer_id }}</h3>
+                <h3>Full Name: {{ customer.full_name }}</h3>
+                <h3>Email: {{ customer.user.email }}</h3>
+                <h3>Contact: {{ customer.contact }}</h3>
+                <h3>Address: {{ customer.address }} - {{ customer.pin_code}}</h3>
+                <h3>Status: {{ customer.user.user_status.capitalize() }}</h3>
+
+                {% if customer.user.user_status == 'active' %}
+                <button class="red-button" onclick="window.location.href='/admin/view/block_user/{{ customer.user.id }}'">Block</button>
+                {% elif customer.user.user_status == 'blocked' %}
+                <button class="edit-button" onclick="window.location.href='/admin/view/unblock_user/{{ customer.user.id }}'">Unblock</button>
+                {% endif %}
+                <button class="red-button" onclick="if(confirm('Are you sure you want to delete this user?')) window.location.href='/admin/delete_user/{{ customer.user.id }}'">Delete</button>
+
+                <h2>Service History:</h2>
+
+                <table class="table-style">
+                    <thead>
+                        <tr>
+                            <th>Service ID</th>
+                            <th>Service Name</th>
+                            <th>Package Name</th>
+                            <th>Professional</th>
+                            <th>Date Completed</th>
+                            <th>Status</th>
+                            <th>Ratings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if customer.requests %}
+                            {% for request in customer.requests %}
+                                    <tr>
+                                        <td>{{ request.id }}</td>
+                                        <td>{{ request.package.service.service_name }}</td>
+                                        <td>{{ request.package.package_name }}</td>
+                                        {% if request.professional %}
+                                        <td>{{ request.professional.full_name }}</td>
+                                        {% else %}
+                                        <td>Not assigned</td>
+                                        {% endif %}
+                                        {% if request.status == 'completed' %}
+                                            <td>{{ request.date_of_complete.strftime("%d-%m-%Y") }}</td>
+                                        {% else %}
+                                            <td align="center">-</td>
+                                        {% endif %}
+                                        <td>{{ request.status }}</td>
+                                        {% if request.rating %}
+                                            <td class="star">
+                                                {% for i in range(request.rating) %}★{% endfor %}
+                                            </td>
+                                        {% else %}
+                                            {% if request.status == 'completed' %}
+                                                <td>Not Rated</td>
+                                            {% else %}
+                                                <td align="center">-</td>
+                                            {% endif %}
+                                        {% endif %}
+                                    </tr>
+                            {% endfor %}
+                        {% else %}    
+                            <tr>
+                                <td colspan="7" align="center">No requests found.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+
+            {% elif professional_id %}
+                <h2>Professional Data:</h2>
+                <h3>Professional ID: {{ professional_id }}</h3>
+                <h3>Full Name: {{ professional.full_name }}</h3>
+                <h3>Email: {{ professional.user.email }}</h3>
+                <h3>Contact: {{ professional.contact }}</h3>
+                <h3>Status: {{ professional.user.user_status.capitalize() }}</h3>
+                <h3>Service Name: {{ professional.service.service_name }}</h3>
+                
+                {% if professional.user.user_status == 'active' %}
+                <button class="red-button" onclick="window.location.href='/admin/view/block_user/{{ professional.user.id }}'">Block</button>
+                {% elif professional.user.user_status == 'inactive' %}
+                    <button class="green" onclick="window.location.href='/admin/view/approve_user/{{ professional.user.id }}'">Approve</button>
+                {% elif professional.user.user_status == 'blocked' %}
+                <button class="edit-button" onclick="window.location.href='/admin/view/unblock_user/{{ professional.user.id }}'">Unblock</button>
+                {% endif %}
+                <button class="red-button" onclick="if(confirm('Are you sure you want to delete this user?')) window.location.href='/admin/delete_user/{{ professional.user.id }}'">Delete</button>
+                
+                <h2>Service History:</h2>
+
+                <table class="table-style">
+                    <thead>
+                        <tr>
+                            <th>Service ID</th>
+                            <th>Package Name</th>
+                            <th>Professional</th>
+                            <th>Customer</th>
+                            <th>Date Completed</th>
+                            <th>Status</th>
+                            <th>Ratings</th>
+                        </tr>   
+                    </thead>
+                    <tbody>
+                        {% if professional.requests %}
+                            {% for request in professional.requests %}
+                                    <tr>    
+                                        <td>{{ request.id }}</td>
+                                        <td>{{ request.package.package_name }}</td>
+                                        <td>{{ request.professional.full_name }}</td>
+                                        <td>{{ request.customer.full_name }}</td>
+                                        {% if request.status == 'completed' %}
+                                            <td>{{ request.date_of_complete.strftime("%d-%m-%Y") }}</td>
+                                        {% else %}
+                                            <td align="center">-</td>
+                                        {% endif %}
+                                        <td>{{ request.status }}</td>
+                                        {% if request.rating %}
+                                            <td class="star">
+                                                {% for i in range(request.rating) %}★{% endfor %}
+                                            </td>
+                                        {% else %}
+                                            {% if request.status == 'completed' %}
+                                                <td>Not Rated</td>
+                                            {% else %}
+                                                <td align="center">-</td>
+                                            {% endif %}
+                                        {% endif %}
+                                    </tr>
+                            {% endfor %}
+                        {% else %}    
+                            <tr>
+                                <td colspan="6" align="center">No requests found.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

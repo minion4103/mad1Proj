@@ -1,0 +1,113 @@
+{% extends "professional_layout.html" %}
+
+{% block content %}
+<div class="rest">
+    {% if package_id %}
+        <h2>Package Data:</h2>
+        <h3>Package ID: {{ package.id }}</h3>
+        <h3>Service Name: {{ package.service.service_name }}</h3>
+        <h3>Package Name: {{ package.package_name }}</h3>
+        <h3>Price: Rs.{{ package.price }}</h3>
+
+        <h2>Service History:</h2>
+
+        <table class="table-style">
+            <thead>
+                <tr>
+                    <th>Service ID</th>
+                    <th>Customer</th>
+                    <th>Date Completed</th>
+                    <th>Status</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if requests %}
+                    {% for request in requests %}
+                    <tr>
+                        <td>{{ request.id }}</td>
+                        <td>{{ request.customer.full_name }}</td>
+                        {% if request.status == 'completed'%}
+                            <td>{{ request.date_of_complete.strftime("%d-%m-%Y") }}</td>
+                        {% elif request.status == 'accepted' %}
+                            <td>ongoing</td>
+                        {% else %}
+                            <td>-</td>
+                        {% endif %}
+                        <td>{{ request.status }}</td>
+                        {% if request.rating %}
+                            <td class="star">
+                            {% for i in range(request.rating) %}★{% endfor %}
+                            </td>
+                        {% else %}
+                            {% if request.status == 'completed' %}
+                            <td>Not Rated</td>
+                            {% else %}
+                            <td align="center">-</td>
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" style="text-align: center">No services found.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    {% elif customer_id %}
+        <h2>Customer Data:</h2>
+        <h3>Customer ID: {{ customer.id }}</h3>
+        <h3>Full Name: {{ customer.full_name }}</h3>
+        <h3>Contact: {{ customer.contact }}</h3>
+        <h3>Address: {{ customer.address }} - {{ customer.pin_code}}</h3>
+
+        <h2>Service History:</h2>
+
+        <table class="table-style">
+            <thead>
+                <tr>
+                    <th>Service ID</th>
+                    <th>Package Name</th>
+                    <th>Date Completed</th>
+                    <th>Status</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if requests %}
+                    {% for request in requests %}
+                    <tr>
+                        <td>{{ request.id }}</td>
+                        <td>{{ request.package.package_name }}</td>
+                        {% if request.status == 'completed'%}
+                            <td>{{ request.date_of_complete.strftime("%d-%m-%Y") }}</td>
+                        {% elif request.status == 'accepted' %}
+                            <td>ongoing</td>
+                        {% else %}
+                            <td>-</td>
+                        {% endif %}
+                        <td>{{ request.status }}</td>
+                        {% if request.rating %}
+                            <td class="star">
+                            {% for i in range(request.rating) %}★{% endfor %}
+                            </td>
+                        {% else %}
+                            {% if request.status == 'completed' %}
+                            <td>Not Rated</td>
+                            {% else %}
+                            <td align="center">-</td>
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" style="text-align: center">No services found.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %}

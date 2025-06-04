@@ -1,0 +1,46 @@
+{% extends "admin_layout.html" %}
+
+{% block content %}
+
+<div class="add-package">
+  <div class="add-package-container">
+    <h2>Add a Package</h2>
+    <form action="/admin/add_package" method="POST">
+      <!-- Dropdown to select the related service -->
+      {% if service %}
+        <label for="service_id">Selected Service:</label>
+        <input type="hidden" name="service_id" value="{{ service.id }}">
+        <input type="text" id="service_id" name="service_id" value="{{ service.service_name }}" disabled>
+      {% else %}
+        <label for="service_id">Select Service:</label>
+        <select id="service_id" name="service_id" required>
+          <option selected disabled>Select a Service</option>
+          {% for service in services %}
+            <option value="{{ service.id }}">{{ service.service_name }}</option>
+          {% endfor %}
+        </select>
+      {% endif %}
+      <br>
+
+      <label for="package_name">Package Details:</label>
+      <input type="text" id="package_name" name="package_name" required>
+      <br>
+
+      <label for="price">Price:</label>
+      <input type="number" id="price" name="price" step="0.01" required>
+      <br>
+
+      <input type="submit" value="Confirm" class="green">
+    </form>
+    <br>
+
+    <button onclick="window.location.href='/admin'">Go Back</button>
+
+    {% if msg %}
+      <p class="flash-message">{{ msg }}</p>
+    {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

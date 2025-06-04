@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <link rel="stylesheet" href="/static/styles/main.css">
+</head>
+<body class="customer-page">
+    <div class="nav">
+        <nav>
+            <ul>
+                <li><p>Household Services</p></li>
+                <li><a href="/customer_dashboard">Home</a></li>
+                <li><a href="/customer/search">Search</a></li>
+                <li><a href="/summary/customer">Summary</a></li>
+                <li><a href="/logout">Logout</a></li>
+                <li><a href="/customer_profile" class="profile">Profile</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="content">        
+        {% block content %}{% endblock %}
+    </div>
+    <script>
+        // Function to close the popup
+        function closePopup() {
+            const notificationPopupRed = document.getElementById('notification-red')
+            const notificationPopupGreen = document.getElementById('notification-green')
+            const customerRating = document.getElementById('customer-rating')
+            if (notificationPopupRed) {
+                notificationPopupRed.style.display = 'none'
+                window.location.href = '/customer_dashboard'
+            }
+            if (notificationPopupGreen) {
+                notificationPopupGreen.style.display = 'none'
+                window.location.href = '/customer_dashboard'
+            }
+            if (customerRating) {
+                customerRating.style.display = 'none'
+                window.location.href = '/customer_dashboard'
+            }
+        }
+    </script>
+</body>
+</html>

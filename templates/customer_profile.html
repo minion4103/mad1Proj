@@ -1,0 +1,31 @@
+{% extends "customer_layout.html" %}
+
+{% block content %}
+    <div class="user-profile">
+        <div class="user-profile-container">
+            <h2>User Profile</h2>
+                <form>
+                    <label>User ID</label>
+                    <input type="text" value="{{ customer.user_id }}" disabled>
+                    <label>Full Name:</label>
+                    <input type="text" value="{{ customer.full_name }}" disabled>
+                    <br>
+                    <label>Email:</label>
+                    <input type="email" value="{{ customer.user.email }}" disabled>
+                    <br>
+                    <label>Role:</label>
+                    <input type="text" value="{{ customer.user.role }}" disabled>
+                    <br>
+                    <label>Contact:</label>
+                    <input type="text" value="{{ customer.contact }}" disabled>
+                    <br>
+                    <label>Address:</label>
+                    <input type="text" value="{{ customer.address }}" disabled>
+                    <br>
+                    <label>Pin Code:</label>
+                    <input type="text" value="{{ customer.pin_code }}" disabled>
+                </form>
+                <button onclick="window.location.href='/customer_profile_edit'" class="edit-button">Edit</button>
+        </div>
+    </div>
+{% endblock %}

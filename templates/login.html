@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Household Services</title>
+    <link rel="stylesheet" href="/static/styles/main.css">
+</head>
+<body>
+
+    {%if msg %}
+        <div class="notification-popup" id="notification-red">
+            <p>{{ msg }}</p>
+            <button class="close-button" id="close-red" onclick="closePopup()">X</button>
+        </div>
+    {% endif %}
+
+    <div class="login-page">
+    <div class="login-container">
+        <h1>Household Services</h1>
+        <form action="/login" method="POST">
+            <label for="email">Email ID:</label>
+            <input type="email" id="email" name="email" placeholder='Enter your registered email' required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder='Enter your password' required>
+    
+            <button type="submit" class="login">Login</button>
+            
+            
+        </form>
+        <p class='liner'>  or  </p>
+        <br>
+        <button class="green" onclick="window.location.href='/customer_signup'" style="display: flex; justify-content: center; align-items: center;">Create User account</button>
+        <br>
+        <button class="green" onclick="window.location.href='/professional_signup'">Register as Professional</button>
+    </div>
+    </div>
+    <script>
+        function closePopup() {
+            const notificationPopup = document.getElementById('notification-red')
+            if (notificationPopup) {
+                notificationPopup.style.display = 'none'
+                window.location.href = '/login'
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+{% extends "professional_layout.html" %}
+
+
+{% block content %}
+<div class="rest">
+    {% if msg %}
+        <div class="notification-popup" id="notification-green">
+            <p>{{ msg }}</p>
+            <button class="close-button" id="close-green" onclick="closePopup()">X</button>
+        </div>
+    {% endif %}
+        <h1>Welcome, {{ professional.full_name }}!</h1>
+        
+        <h2 style="text-decoration: none;">Your Service: {{ professional.service.service_name }}</h2>
+
+        <h2>Available Packages:</h2>
+        <table class="table-style">
+            <thead>
+                <tr>
+                    <th>Package ID</th>
+                    <th>Package Name</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if professional.service.packages %}
+                    {% for package in professional.service.packages %}
+                        <tr>
+                            <td><button class="view-button" onclick="window.location.href='/professional/view/packages?package_id={{ package.id }}'">{{ package.id }}</button></td>
+                            <td>{{ package.package_name }}</td>
+                            <td>{{ package.price }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4" align="center">No packages found.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+        {% if avail %}
+        <h2>New Requests:</h2> 
+        <table class="table-style">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Package</th>
+                    <th>Customer</th>
+                    <th>Address</th>
+                    <th>Contact</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for request in service_requests %}
+                        {% if request.status == 'requested' %}
+                            <tr>
+                                <td>{{ request.id }}</td>
+                                <td>{{ request.package.package_name }}</td>
+                                <td>{{ request.customer.full_name }}</td>
+                                <td>{{ request.customer.address }} - {{ request.customer.pin_code }}</td>
+                                <td>{{ request.customer.contact }}</td>
+                                <td>
+                                    <button class="green" onclick="window.location.href='/professional/{{ professional.id }}/accept_request/{{ request.id }}'">Accept</button>
+                                    <button class="red-button" onclick="window.location.href='/professional/{{ professional.id }}/reject_request/{{ request.id }}'">Reject</button>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        {% if 'accepted' in req %}
+        <h2>Your Assigned Requests:</h2>
+        <table class="table-style">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Package</th>
+                    <th>Customer</th>
+                    <th>Address</th>
+                    <th>Contact</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for request in professional.requests %}
+                        {% if request.status == 'accepted' %}
+                            <tr>
+                                <td>{{ request.id }}</td>
+                                <td>{{ request.package.package_name }}</td>
+                                <td>{{ request.customer.full_name }}</td>
+                                <td>{{ request.customer.address }} - {{ request.customer.pin_code }}</td>
+                                <td>{{ request.customer.contact }}</td>
+                                <td>
+                                    <button onclick="window.location.href='/professional/close_request/{{ request.id }}'">Mark Completed</button>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        {% if 'completed' in req %}
+        <h2>Completed Services:</h2>
+        <table class="table-style">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Package</th>
+                    <th>Customer</th>
+                    <th>Contact</th>
+                    <th>Date</th>
+                    <th>Ratings</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for request in professional.requests %}
+                        {% if request.status == 'completed' %}
+                            <tr>
+                                <td>{{ request.id }}</td>
+                                <td>{{ request.package.package_name }}</td>
+                                <td>{{ request.customer.full_name }}</td>
+                                <td>{{ request.customer.contact }}</td>
+                                <td>{{ request.date_of_complete.strftime("%d-%m-%Y") }}</td>
+                                {% if request.rating %}
+                                    <td class="star">{% for i in range(request.rating) %}★{% endfor %}</td>
+                                {% else %}
+                                    <td>Not Rated</td>{% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+</div>            
+
+{% endblock %}

@@ -1,0 +1,240 @@
+{% extends "admin_layout.html" %}
+
+{% block content %}
+<div class="rest">
+    <div class="search">
+        <div class="search-container">
+            <form action="/admin/search" method="POST" style="display: flex; flex-direction: row; align-items: center; width: 700px;  gap: 10px">
+                <label style="font-size: 1.5em;">Search by: </label>
+                {% if data %}
+                    <select name="search_by" id="search_by">
+                        <option disabled>Select an option</option>
+                        {% if data['search_by'] == 'professional' %}
+                            <option selected value="professional">Professionals</option>
+                        {% else %}
+                            <option value="professional">Professionals</option>
+                        {% endif %}
+                        {% if data['search_by'] == 'customer' %}
+                            <option selected value="customer">Customers</option>
+                        {% else %}
+                            <option value="customer">Customers</option>
+                        {% endif %}
+                        {% if data['search_by'] == 'service' %}
+                            <option selected value="service">Services</option>
+                        {% else %}
+                            <option value="service">Services</option>
+                        {% endif %}
+                        {% if data['search_by'] == 'package' %}
+                            <option selected value="package">Packages</option>
+                        {% else %}
+                            <option value="package">Packages</option>
+                        {% endif %}
+                        {% if data['search_by'] == 'request' %}
+                            <option selected value="request">Service Requests</option>
+                        {% else %}
+                            <option value="request">Service Requests</option>
+                        {% endif %}
+                    </select>
+                    {% if data['search_txt'] %}
+                    <input type="text" id="search_txt" name="search_txt" style="width: 250px;" value="{{ data['search_txt'] }}">
+                    {% else %}
+                    <input type="text" id="search_txt" name="search_txt" style="width: 250px;">
+                    {% endif %}
+                {% else %}
+                    <select name="search_by" id="search_by">
+                        <option selected disabled>Select an option</option>
+                        <option value="professional">Professionals</option>
+                        <option value="customer">Customers</option>
+                        <option value="service">Services</option>
+                        <option value="package">Packages</option>
+                        <option value="request">Service Requests</option>
+                    </select>
+                    <input type="text" id="search_txt" name="search_txt" style="width: 250px;">
+                {% endif %}
+                <input type="submit" value="Search" class="green">
+            </form>
+            <br>
+            
+        {% if msg %}
+        <p class="flash-message"> {{ msg }}</p>
+        {% endif %}
+        </div>
+    </div>
+
+    <div class="search-results">
+    {% if searching %}
+    
+        {% if customers %}
+            
+            <h3>Customers:</h3>
+            <table class="table-style">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Contact No.</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for customer in customers %}
+                            <tr>
+                                <td><button class="view-button" onclick="window.location.href='/admin/view/customers?customer_id={{customer.user.id}}'">{{ customer.user.id }}</button></td>
+                                <td>{{ customer.full_name }}</td>
+                                <td>{{ customer.user.email }}</td>
+                                <td>{{ customer.contact }}</td>
+                                <td>{{ customer.user.user_status }}</td>
+                                
+                            </tr>
+                        {% endfor %}
+                </tbody>
+            </table>    
+
+        {% elif professionals %}
+            
+            <h3>Professionals:</h3>
+            <table class="table-style">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Contact No.</th>
+                        <th>Service Name</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for professional in professionals %}
+                            <tr>
+                                <td><button class="view-button" onclick="window.location.href='/admin/view/professionals?professional_id={{professional.user.id}}'">{{ professional.user.id }}</button></td>
+                                <td>{{ professional.full_name }}</td>
+                                <td>{{ professional.user.email }}</td>
+                                <td>{{ professional.contact }}</td>
+                                <td>{{ professional.service.service_name }}</td>
+                                <td>{{ professional.user.user_status }}</td>
+                            </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+
+        {% elif services %}
+
+            <h3>Services:</h3>
+            <table class="table-style">
+                <thead>
+                    <tr>
+                        <th>Service ID</th>
+                        <th>Service Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for service in services %}
+                            <tr>
+                                <td><button class="view-button" onclick="window.location.href='/admin/view/services?service_id={{service.id}}'">{{ service.id }}</button></td>
+                                <td>{{ service.service_name }}</td>
+                            </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+
+        {% elif packages %}
+
+            <h3>Packages:</h3>
+            <table class="table-style">
+                <thead>
+                    <tr>
+                        <th>Package ID</th>
+                        <th>Service Name</th>
+                        <th>Package Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for package in packages %}
+                            <tr>
+                                <td><button class="view-button" onclick="window.location.href='/admin/view/packages?package_id={{package.id}}'">{{ package.id }}</button></td>
+                                <td>{{ package.service.service_name }}</td>
+                                <td>{{ package.package_name }}</td>
+                            </tr>
+                        {% endfor %}
+                </tbody>
+            </table>    
+
+        {% elif requests %}
+
+            <h3>Service Requests</h3>
+            <table class="table-style">
+                <thead>
+                    <tr>
+                        <th>Service ID</th>
+                        <th>Service Name</th>
+                        <th>Package Name</th>
+                        <th>Professional</th>
+                        <th>Customer</th>
+                        <th>Date Created / Completed</th>
+                        <th>Status</th>
+                        <th>Ratings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in requests %}
+                        <tr>
+                            <td>{{ request.id }}</td>
+                            <td>{{ request.package.service.service_name }}</td>
+                            <td>{{ request.package.package_name }}</td>
+                            {% if request.professional %}
+                            <td>{{ request.professional.full_name }}</td>
+                            {% else %}
+                            <td>Not assigned</td>
+                            {% endif %}
+                            <td>{{ request.customer.full_name }}</td>
+                            {% if request.status == 'completed' %}
+                                <td>{{ request.date_of_complete.strftime("%d-%m-%Y") }}</td>
+                            {% else %}
+                                <td>{{ request.date_of_request.strftime("%d-%m-%Y") }}</td>
+                            {% endif %}
+                            <td>{{ request.status }}</td>
+                            {% if request.rating %}
+                                <td class="star">
+                                {% for i in range(request.rating) %}★{% endfor %}
+                                </td>
+                            {% else %}
+                                {% if request.status == 'completed' %}
+                                <td>Not Rated</td>
+                                {% else %}
+                                <td align="center">-</td>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+        {% else %}
+            <p class="flash-message">No Search results found.</p>
+        {% endif %}
+
+    {% endif %}
+    </div>
+
+    <script>
+        const search_by = document.getElementById("search_by");
+        const search_txt = document.getElementById("search_txt");
+        search_by.addEventListener("change", function() {
+            if (search_by.value === "customer") {
+                search_txt.placeholder = "Enter Name / ID / Status";
+            } else if (search_by.value === "professional") {
+                search_txt.placeholder = "Enter Name / ID / Status / Service";
+            } else if (search_by.value === "service") {
+                search_txt.placeholder = "Enter Name / ID";
+            } else if (search_by.value === "package") {
+                search_txt.placeholder = "Enter Name / ID / Service Name";
+            } else if (search_by.value === "request") {
+                search_txt.placeholder = "Enter ID/ Status/ Service/ Package/ Rating";
+            }
+            search_txt.value = "";  // to clear the search_txt field if another option is selected 
+        });
+    </script>
+</div>
+{% endblock %}

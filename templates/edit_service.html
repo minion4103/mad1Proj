@@ -1,0 +1,17 @@
+{% extends "admin_layout.html" %}
+
+{% block content %}
+  <div class="edit-service">
+    <div class="edit-service-container">
+      <h2>Edit Services</h2>
+      <form action="/admin/edit_service/{{ service.id }}" method="POST">
+        <label for="service_name">Service Name:</label>
+        <input type="text" id="service_name" name="service_name" value="{{ service.service_name }}" required>
+        <br>
+        <input type="submit" value="Confirm" class="green">
+      </form>
+      <br>
+      <button onclick="window.location.href='/admin'">Go Back</button>
+    </div>
+  </div>
+{% endblock %}

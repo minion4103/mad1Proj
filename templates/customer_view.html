@@ -1,0 +1,62 @@
+{% extends "customer_layout.html" %}
+
+{% block content %}
+<div class="rest">
+    <h2>Package Data:</h2>
+    <h3>Package ID: {{ package.id }}</h3>
+    <h3>Service Name: {{ package.service.service_name }}</h3>
+    <h3>Package Name: {{ package.package_name }}</h3>
+    <h3>Price: Rs.{{ package.price }}</h3>
+
+    <h2>Service History:</h2>
+
+    <table class="table-style">
+        <thead>
+            <tr>
+                <th>Service ID</th>
+                <th>Professional</th>
+                <th>Date Requested</th>
+                <th>Date Completed</th>
+                <th>Status</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if requests %}
+                {% for request in requests %}
+                <tr>
+                    <td>{{ request.id }}</td>
+                    {% if request.professional %}
+                        <td>{{ request.professional.full_name }}</td>
+                    {% else %}
+                        <td>Not assigned</td>
+                    {% endif %}
+                    <td>{{ request.date_of_request.strftime("%d-%m-%Y") }}</td>
+                    {% if request.date_of_complete %}
+                        <td>{{ request.date_of_complete.strftime("%d-%m-%Y") }}</td>
+                    {% else %}
+                        <td align="center">-</td>
+                    {% endif %}
+                    <td>{{ request.status }}</td>
+                    {% if request.rating %}
+                        <td class="star">
+                        {% for i in range(request.rating) %}★{% endfor %}
+                        </td>
+                    {% else %}
+                        {% if request.status == 'completed' %}
+                        <td>Not Rated</td>
+                        {% else %}
+                        <td align="center">-</td>
+                        {% endif %}
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="6" style="text-align: center">No requests found.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

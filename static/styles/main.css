@@ -1,0 +1,467 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #c5c5eb;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-page, .customer_signup-page  {
+    font-family: Arial, sans-serif;
+    background-color: #c5c5eb;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    margin: 20px auto;
+}
+
+.professional_signup-page  {
+    font-family: Arial, sans-serif;
+    background-color: #c5c5eb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 20px auto;
+}
+
+.login-container, .signup-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 350px;   
+}
+
+.professional_signup-page h1 {
+    margin-top: 0px;
+    margin-bottom: 3px;
+}
+
+.liner {
+    display:flex;
+    color: #4b4f56;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+}
+
+.liner::before, .liner::after {
+    content:'';
+    margin-left:10px;
+    margin-right:10px;
+    flex-grow:1;
+    height:0.5px;
+    background-color:#4b4f56;
+}
+
+.login_bottom p{
+    color: red;
+    margin-left: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input, select {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #b0afaf;
+    border-radius: 5px;
+}
+
+button.login {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button.login:hover {
+    background-color: #0056b3;
+}
+
+p {
+    margin: 15px auto 0px auto;
+} 
+
+.flash-message {
+    color: red;
+    background-color: #dfdfdf;
+    padding: 10px;
+    border-radius: 5px;
+    width: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+
+/* Navigation styles */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0px;
+    background-color: #333;
+    width: 100%;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+nav ul li a {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+nav ul li a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.profile {
+    position: absolute;
+    right: 20px;
+    top: 0px;
+    padding: 14px;
+}
+
+nav p {
+    position: absolute;
+    left: 20px;
+    top: 0px;
+    color: white;
+    font-weight: bold;
+}
+/* Dashboard Layout */
+
+.rest {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.rest #add_service, #add_package{
+    padding: 10px 15px;
+    margin: 5px auto 10px 65%;
+}
+
+h2 {
+    text-decoration: underline;
+}
+
+h2, h3{
+    margin-bottom: 5px;
+}
+
+/* Button styling (common for both) */
+.green {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.green:hover {
+    background-color: #45a049;
+}
+
+/* Edit and Delete Button Styles */
+.edit-button {
+    background-color: #9e9d9d;
+    padding: 8px 16px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 2px auto 2px auto;
+}
+
+.edit-button:hover {
+    background-color: #6e6e6e;
+}
+
+.red-button {
+    background-color: #ff0000; 
+    padding: 8px 14px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 2px auto 2px auto;
+}
+
+.red-button:hover {
+    background-color: #cc0000;
+}
+
+.add-service, .edit-service, .add-package, .edit-package, .user-profile, .edit-profile {
+    background-color: #c5c5eb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.add-service-container, .edit-service-container, .add-package-container, .edit-package-container, .user-profile-container, .edit-profile-container {
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+}
+
+/* table style */
+.table-style {
+    border-collapse: collapse;
+    width: 80%;
+    margin: 10px 0;
+    font-size: 18px;
+    text-align: left;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.table-style th,
+.table-style td {
+    padding: 10px 15px;
+    border: 1px solid #363434; /* Light gray border */
+}
+
+.table-style th {
+    background-color: #1260a3; /* Header background color */
+    color: white; /* Header text color */
+}
+
+.table-style tr:nth-child(even) {
+    background-color: #c8c9c9; /* Light gray background for even rows */
+}
+.table-style tr:nth-child(odd) {
+    background-color: #e1e1e1; /* Light gray background for even rows */
+}
+
+.table-style tr:hover {
+    background-color: #a3a3a3ec; /* Background color on hov-style */
+}
+
+
+/* customer services design */
+
+.service-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.service-selection h2 {
+    margin-bottom: 10px;
+}
+
+.service-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    border: 2px solid #007BFF;
+    border-radius: 10px;
+    padding: 10px;
+    width: 60%;
+}
+
+.service-buttons button {
+    width: 150px;
+    height: 100px;
+    border: 2px solid #007BFF;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(223, 177, 177);
+    border: none;
+    font-size: 1.1em;
+    color: #007BFF;
+    cursor: pointer;
+}
+
+.service-buttons button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.service-box button:hover {
+    color: #0056b3;
+}
+
+
+.overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.customer-rating-container {
+    background-color: #c5c5eb;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 350px;
+    width: 90%;
+    position: relative;
+    z-index: 1001;
+}
+textarea {
+    background-color: #e4e4f2;
+}
+.customer-rating-container .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+/* Styling for the notification popup */
+.notification-popup {
+    margin: 5px 20px;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.notification-popup p {
+    margin: 0;
+    font-size: 20px;
+}
+
+#notification-red {
+    background-color: #f8d7da;
+    color: #76343e;
+}
+
+#notification-green {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    
+    font-weight: bold;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+#close-red:hover, #close-green:hover {
+    color: #000;
+}
+
+#close-red {
+    color: #ce182a;
+}
+
+#close-green {
+    color: #1c6f2f;
+}
+.view-button {
+    background-color: #a2c7ef;
+    border-radius: 15px;
+    border: none;
+    font-size: 15px;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+.view-button:hover {
+    background-color: #638ebc;
+}
+
+/* customer rating */
+.star-rating {
+    direction: rtl;
+    font-size: 3em;
+    unicode-bidi: bidi-override;
+    display: inline-flex;
+    justify-content: center;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    color: #5d5b5b;
+    cursor: pointer;
+}
+
+.star-rating input:checked ~ label {
+    color: gold;
+}
+.star {
+    font-size: 1.5em;
+    color: #f1a61a;
+    text-align: center;
+}
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: gold;
+}
+
+.chart-container {
+    margin: 10px 10px ;
+}
+
+.chart-container img {
+    padding: 10px; 
+    width: 100%;
+    max-width: 700px;  
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+

@@ -1,0 +1,38 @@
+{% extends "customer_layout.html" %}
+
+{% block content %}
+<div class="rest">
+    {% if no_professional_found %}
+        <div class="notification-popup" id="notification-red">
+            <p>No professional found for the selected package.</p>
+            <button class="close-button" id="close-red" onclick="closePopup()">X</button>
+        </div>
+    {% endif %}
+    <div class="choose-package">
+        <h2>Available Packages for {{ packages[0].service.service_name }}</h2>
+        
+        <table class="table-style">
+            <thead>
+                <tr>
+                    <th>Package Id</th>
+                    <th>Package Name</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for package in packages %}
+                    <tr>
+                        <td><button class="view-button" onclick="window.location.href='/customer/view/packages?package_id={{ package.id }}'">{{ package.id }}</button></td>
+                        <td>{{ package.package_name }}</td>
+                        <td>{{ package.price }}</td>
+                        <td>
+                            <button onclick="window.location.href='/customer/{{ customer_id }}/request_package/{{ package.id }}'" class="green">Request</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

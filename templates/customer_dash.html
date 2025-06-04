@@ -1,0 +1,170 @@
+{% extends "customer_layout.html" %}
+
+{% block content %}
+<div class="rest">
+    
+    {% if no_package_found %}
+        <div class="notification-popup" id="notification-red">
+            <p>No packages found for the selected service.</p>
+            <button class="close-button" id="close-red" onclick="closePopup()">X</button>
+        </div>
+    {% elif msg %}
+        <div class="notification-popup" id="notification-green">
+            <p>{{ msg }}</p>
+            <button class="close-button" id="close-green" onclick="closePopup()">X</button>
+        </div>
+    {% endif %}
+
+    <h1>Welcome, {{ customer.full_name }}!</h1>
+
+        <div class="service-selection">
+            <h2>Looking For?</h2>
+            <div class="service-buttons">
+                {% if services %}
+                    {% for service in services %}
+                            <button  onclick="window.location.href='/customer/{{ customer.id }}/request_service/{{ service.id }}'">
+                                {{ service.service_name }}
+                            </button>
+                    {% endfor %}
+                {% else %}
+                    <p>No services available at the moment.</p>
+                {% endif %}
+            </div>
+        </div>
+    
+        
+        
+        {% if 'requested' in req %}
+        <h2>Pending Requests</h2>
+        <table class="table-style">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Service Name</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for request in service_requests %}
+                    {% if request.status == 'requested' %}
+                    <tr>
+                        <td>{{ request.id }}</td>
+                        <td>{{ request.package.package_name }} ({{request.package.service.service_name}})</td>
+                        <td>{{ request.status}}</td>
+                        {% if request.status == 'requested' %}
+                            <td><button class="red-button" onclick="window.location.href='/customer/{{ customer.id }}/cancel_request/{{ request.id }}'">Cancel</button></td>
+                        {% else %}
+                            <td>-</td>
+                        {% endif %}
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        {% if 'accepted' in req %}
+        <h2>Ongoing Requests</h2>
+        <table class="table-style">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Service Name</th>
+                    <th>Professional</th>
+                    <th>Contact No.</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for request in service_requests %}
+                    {% if request.status == 'accepted'%}
+                    <tr>
+                        <td>{{ request.id }}</td>
+                        <td>{{ request.package.package_name }} ({{request.package.service.service_name}})</td>
+                        <td>{{ request.professional.full_name }}</td>
+                        <td>{{ request.professional.contact }}</td>
+                        <td><button class="red-button" onclick="window.location.href='/customer/{{ customer.id }}/cancel_request/{{ request.id }}'">Cancel</button></td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        {% if 'completed' in req %}
+        <h2>Completed Services</h2>
+        <table class="table-style">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Service Name</th>
+                    <th>Professional</th>
+                    <th>Contact No.</th>
+                    <th>Date</th>
+                    <th>Ratings</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for request in service_requests %}
+                    {% if request.status == 'completed'%}
+                    <tr>
+                        <td>{{ request.id }}</td>
+                        <td>{{ request.package.package_name }} ({{request.package.service.service_name}})</td>
+                        <td>{{ request.professional.full_name }}</td>
+                        <td>{{ request.professional.contact }}</td>
+                        <td>{{ request.date_of_complete.strftime("%d-%m-%Y") }}</td>
+                        {% if request.rating %}
+                            <td class="star">
+                                {% for i in range(request.rating) %}★{% endfor %}</td>
+                        {% else %}
+                            <td><button class="green" onclick="window.location.href='/customer_rating/{{ request.id }}'">Give Rating</button></td>
+                        {% endif %}
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+</div>
+
+    {% if rating['rating_popup'] %}
+    
+    <div class="overlay">
+        <div class="customer-rating" id="customer-rating">
+            <div class="customer-rating-container">    
+                <button class="close-button" onclick="closePopup()">X</button>
+                <h2>Rate Your Service Experience</h2>
+                <p><strong>Package Name:</strong> {{ rating['package_name'] }}</p>
+                <p>How was your experience with <strong>{{ rating['professional_name'] }}</strong>?</p>
+
+                <form action="/customer_rating/{{ rating['request_id'] }}" method="POST">
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="rating" value="5">
+                        <label for="star5" title="5" required>★</label>
+                        
+                        <input type="radio" id="star4" name="rating" value="4">
+                        <label for="star4" title="4" >★</label>
+                        
+                        <input type="radio" id="star3" name="rating" value="3">
+                        <label for="star3" title="3" >★</label>
+                        
+                        <input type="radio" id="star2" name="rating" value="2">
+                        <label for="star2" title="2" >★</label>
+                        
+                        <input type="radio" id="star1" name="rating" value="1">
+                        <label for="star1" title="1" >★</label>
+                    </div>
+                    <br>
+                    <textarea name="feedback" placeholder="Leave additional feedback (optional)" rows="4" cols="50"></textarea>
+                    <br><br>
+                    <input type="submit" value="Submit Feedback" class="green">
+                </form>
+            </div>
+        </div>
+    {% endif %}
+
+
+
+</div>
+{% endblock %}
